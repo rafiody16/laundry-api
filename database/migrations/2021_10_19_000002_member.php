@@ -17,7 +17,6 @@ class Member extends Migration
             $table->bigIncrements('id_member');
             $table->string('nama');
             $table->string('alamat');
-            $table->string('password');
             $table->enum('jenis_kelamin', ['l', 'p']);
             $table->string('tlp');
             $table->timestamps();
