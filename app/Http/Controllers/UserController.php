@@ -79,7 +79,7 @@ class userController extends Controller
     public function loginCheck(){
         try {
             if(!$user = JWTAuth::parseToken()->authenticate()){
-                return $this->response->errorResponse('Invalid Token!');
+                return $this->response()->errorResponse('Invalid Token!');
             }
         } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e){
             return response()->json([

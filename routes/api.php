@@ -11,10 +11,10 @@ use GuzzleHttp\Middleware;
 
 Route::post('register', [UserController::class,'insert']);
 Route::post('login', [UserController::class,'login']);
+Route::get('login/check', [UserController::class, 'loginCheck']);
+Route::post('logout', [UserController::class,'logout']); 
 
 Route::group(['middleware'=> ['jwt.verify:admin,kasir']],function(){
-   Route::get('login/check', [UserController::class, 'loginCheck']);
-   Route::post('logout', [UserController::class,'logout']); 
 });
 
 // Route::group(['middleware' => ['jwt.verify::admin,kasir']],function(){
@@ -36,7 +36,9 @@ Route::group(['middleware' => ['jwt.verify:admin']], function(){
     Route::delete('outlet/{id}', [OutletController::class, 'delete']);
     Route::get('outlet', [OutletController::class, 'getAll']); 
     Route::get('outlet/{id_outlet}', [OutletController::class, 'getById']); 
+});
 
+Route::group(['middleware' => ['jwt.verify:admin, owner']], function(){
     Route::post('paket', [PaketController::class, 'insert']);
     Route::put('paket/{id}', [PaketController::class, 'update']);
     Route::delete('paket/{id}', [PaketController::class, 'delete']);
@@ -44,14 +46,14 @@ Route::group(['middleware' => ['jwt.verify:admin']], function(){
     Route::get('paket/{id_paket}', [PaketController::class, 'getById']);
 });
 
-Route::group(['middleware' => ['jwt.verify:admin,kasir']],function(){
-Route::post('member',[MemberController::class,'insert']);
-Route::put('member/{id}',[MemberController::class,'update']);
-Route::delete('member/{id}', [MemberController::class, 'delete']);
-Route::get('member',[MemberController::class, 'getAll']);
-Route::get('member/{id_member}',[MemberController::class, 'getById']);
-Route::post('transaksi',[TransaksiController::class,'insert']);
-Route::post('transaksi/report', [TransaksiController::class, 'report']);
-Route::put('transaksi/status', [TransaksiController::class, 'update_status']);
-Route::put('transaksi/bayar', [TransaksiController::class, 'update_bayar']);
+Route::group(['middleware' => ['jwt.verify:admin,kasir,owner']],function(){
+    Route::post('member',[MemberController::class,'insert']);
+    Route::put('member/{id}',[MemberController::class,'update']);
+    Route::delete('member/{id}', [MemberController::class, 'delete']);
+    Route::get('member',[MemberController::class, 'getAll']);
+    Route::get('member/{id_member}',[MemberController::class, 'getById']);
+    Route::post('transaksi',[TransaksiController::class,'insert']);
+    Route::post('transaksi/report', [TransaksiController::class, 'report']);
+    Route::put('transaksi/status', [TransaksiController::class, 'update_status']);
+    Route::put('transaksi/bayar', [TransaksiController::class, 'update_bayar']);
 });
